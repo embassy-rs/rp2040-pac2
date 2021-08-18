@@ -1,0 +1,1 @@
+window.ALL_CRATES = ["bare_metal","bitfield","cortex_m","embedded_hal","rp2040_pac2","vcell","void","volatile_register"];

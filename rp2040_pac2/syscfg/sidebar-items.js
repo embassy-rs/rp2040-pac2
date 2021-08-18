@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["regs",""]],"struct":[["Syscfg","Register block for various chip control signals"]]});

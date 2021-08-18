@@ -1,0 +1,293 @@
+<!DOCTYPE html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1.0"><meta name="generator" content="rustdoc"><meta name="description" content="Source of the Rust file `src&#x2F;lib.rs`."><meta name="keywords" content="rust, rustlang, rust-lang"><title>lib.rs - source</title><link rel="stylesheet" type="text/css" href="../../normalize.css"><link rel="stylesheet" type="text/css" href="../../rustdoc.css" id="mainThemeStyle"><link rel="stylesheet" type="text/css" href="../../light.css"  id="themeStyle"><link rel="stylesheet" type="text/css" href="../../dark.css" disabled ><link rel="stylesheet" type="text/css" href="../../ayu.css" disabled ><script id="default-settings" ></script><script src="../../storage.js"></script><script src="../../crates.js"></script><noscript><link rel="stylesheet" href="../../noscript.css"></noscript><link rel="alternate icon" type="image/png" href="../../favicon-16x16.png"><link rel="alternate icon" type="image/png" href="../../favicon-32x32.png"><link rel="icon" type="image/svg+xml" href="../../favicon.svg"><style type="text/css">#crate-search{background-image:url("../../down-arrow.svg");}</style></head><body class="rustdoc source"><!--[if lte IE 11]><div class="warning">This old browser is unsupported and will most likely display funky things.</div><![endif]--><nav class="sidebar"><div class="sidebar-menu" role="button">&#9776;</div><a href='../../rp2040_pac2/index.html'><div class='logo-container rust-logo'><img src='../../rust-logo.png' alt='logo'></div></a></nav><div class="theme-picker"><button id="theme-picker" aria-label="Pick another theme!" aria-haspopup="menu" title="themes"><img width="18" height="18" alt="Pick another theme!" src="../../brush.svg"></button><div id="theme-choices" role="menu"></div></div><nav class="sub"><form class="search-form"><div class="search-container"><div><select id="crate-search"><option value="All crates">All crates</option></select><input class="search-input" name="search" disabled autocomplete="off" spellcheck="false" placeholder="Click or press ‘S’ to search, ‘?’ for more options…" type="search"></div><button type="button" id="help-button" title="help">?</button><a id="settings-menu" href="../../settings.html" title="settings"><img width="18" height="18" alt="Change settings" src="../../wheel.svg"></a></div></form></nav><section id="main" class="content"><div class="example-wrap"><pre class="line-numbers"><span id="1">  1</span>
+<span id="2">  2</span>
+<span id="3">  3</span>
+<span id="4">  4</span>
+<span id="5">  5</span>
+<span id="6">  6</span>
+<span id="7">  7</span>
+<span id="8">  8</span>
+<span id="9">  9</span>
+<span id="10"> 10</span>
+<span id="11"> 11</span>
+<span id="12"> 12</span>
+<span id="13"> 13</span>
+<span id="14"> 14</span>
+<span id="15"> 15</span>
+<span id="16"> 16</span>
+<span id="17"> 17</span>
+<span id="18"> 18</span>
+<span id="19"> 19</span>
+<span id="20"> 20</span>
+<span id="21"> 21</span>
+<span id="22"> 22</span>
+<span id="23"> 23</span>
+<span id="24"> 24</span>
+<span id="25"> 25</span>
+<span id="26"> 26</span>
+<span id="27"> 27</span>
+<span id="28"> 28</span>
+<span id="29"> 29</span>
+<span id="30"> 30</span>
+<span id="31"> 31</span>
+<span id="32"> 32</span>
+<span id="33"> 33</span>
+<span id="34"> 34</span>
+<span id="35"> 35</span>
+<span id="36"> 36</span>
+<span id="37"> 37</span>
+<span id="38"> 38</span>
+<span id="39"> 39</span>
+<span id="40"> 40</span>
+<span id="41"> 41</span>
+<span id="42"> 42</span>
+<span id="43"> 43</span>
+<span id="44"> 44</span>
+<span id="45"> 45</span>
+<span id="46"> 46</span>
+<span id="47"> 47</span>
+<span id="48"> 48</span>
+<span id="49"> 49</span>
+<span id="50"> 50</span>
+<span id="51"> 51</span>
+<span id="52"> 52</span>
+<span id="53"> 53</span>
+<span id="54"> 54</span>
+<span id="55"> 55</span>
+<span id="56"> 56</span>
+<span id="57"> 57</span>
+<span id="58"> 58</span>
+<span id="59"> 59</span>
+<span id="60"> 60</span>
+<span id="61"> 61</span>
+<span id="62"> 62</span>
+<span id="63"> 63</span>
+<span id="64"> 64</span>
+<span id="65"> 65</span>
+<span id="66"> 66</span>
+<span id="67"> 67</span>
+<span id="68"> 68</span>
+<span id="69"> 69</span>
+<span id="70"> 70</span>
+<span id="71"> 71</span>
+<span id="72"> 72</span>
+<span id="73"> 73</span>
+<span id="74"> 74</span>
+<span id="75"> 75</span>
+<span id="76"> 76</span>
+<span id="77"> 77</span>
+<span id="78"> 78</span>
+<span id="79"> 79</span>
+<span id="80"> 80</span>
+<span id="81"> 81</span>
+<span id="82"> 82</span>
+<span id="83"> 83</span>
+<span id="84"> 84</span>
+<span id="85"> 85</span>
+<span id="86"> 86</span>
+<span id="87"> 87</span>
+<span id="88"> 88</span>
+<span id="89"> 89</span>
+<span id="90"> 90</span>
+<span id="91"> 91</span>
+<span id="92"> 92</span>
+<span id="93"> 93</span>
+<span id="94"> 94</span>
+<span id="95"> 95</span>
+<span id="96"> 96</span>
+<span id="97"> 97</span>
+<span id="98"> 98</span>
+<span id="99"> 99</span>
+<span id="100">100</span>
+<span id="101">101</span>
+<span id="102">102</span>
+<span id="103">103</span>
+<span id="104">104</span>
+<span id="105">105</span>
+<span id="106">106</span>
+<span id="107">107</span>
+<span id="108">108</span>
+<span id="109">109</span>
+<span id="110">110</span>
+<span id="111">111</span>
+<span id="112">112</span>
+<span id="113">113</span>
+<span id="114">114</span>
+<span id="115">115</span>
+<span id="116">116</span>
+<span id="117">117</span>
+<span id="118">118</span>
+<span id="119">119</span>
+<span id="120">120</span>
+<span id="121">121</span>
+<span id="122">122</span>
+<span id="123">123</span>
+<span id="124">124</span>
+<span id="125">125</span>
+<span id="126">126</span>
+<span id="127">127</span>
+<span id="128">128</span>
+<span id="129">129</span>
+<span id="130">130</span>
+<span id="131">131</span>
+<span id="132">132</span>
+<span id="133">133</span>
+<span id="134">134</span>
+<span id="135">135</span>
+<span id="136">136</span>
+<span id="137">137</span>
+<span id="138">138</span>
+<span id="139">139</span>
+<span id="140">140</span>
+<span id="141">141</span>
+<span id="142">142</span>
+<span id="143">143</span>
+<span id="144">144</span>
+</pre><pre class="rust">
+<span class="attribute">#![<span class="ident">no_std</span>]</span>
+<span class="attribute">#![<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Peripheral access API (generated using svd2rust v0.1.0 (c53af6b 2021-06-25))&quot;</span>]</span>
+<span class="attribute">#[<span class="ident">derive</span>(<span class="ident">Copy</span>, <span class="ident">Clone</span>, <span class="ident">Debug</span>, <span class="ident">PartialEq</span>, <span class="ident">Eq</span>)]</span>
+<span class="kw">pub</span> <span class="kw">enum</span> <span class="ident">Interrupt</span> {
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;0 - TIMER_IRQ_0&quot;</span>]</span>
+    <span class="ident">TIMER_IRQ_0</span> <span class="op">=</span> <span class="number">0</span>,
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;1 - TIMER_IRQ_1&quot;</span>]</span>
+    <span class="ident">TIMER_IRQ_1</span> <span class="op">=</span> <span class="number">1</span>,
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;2 - TIMER_IRQ_2&quot;</span>]</span>
+    <span class="ident">TIMER_IRQ_2</span> <span class="op">=</span> <span class="number">2</span>,
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;3 - TIMER_IRQ_3&quot;</span>]</span>
+    <span class="ident">TIMER_IRQ_3</span> <span class="op">=</span> <span class="number">3</span>,
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;4 - PWM_IRQ_WRAP&quot;</span>]</span>
+    <span class="ident">PWM_IRQ_WRAP</span> <span class="op">=</span> <span class="number">4</span>,
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;5 - USBCTRL_IRQ&quot;</span>]</span>
+    <span class="ident">USBCTRL_IRQ</span> <span class="op">=</span> <span class="number">5</span>,
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;6 - XIP_IRQ&quot;</span>]</span>
+    <span class="ident">XIP_IRQ</span> <span class="op">=</span> <span class="number">6</span>,
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;7 - PIO0_IRQ_0&quot;</span>]</span>
+    <span class="ident">PIO0_IRQ_0</span> <span class="op">=</span> <span class="number">7</span>,
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;8 - PIO0_IRQ_1&quot;</span>]</span>
+    <span class="ident">PIO0_IRQ_1</span> <span class="op">=</span> <span class="number">8</span>,
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;9 - PIO1_IRQ_0&quot;</span>]</span>
+    <span class="ident">PIO1_IRQ_0</span> <span class="op">=</span> <span class="number">9</span>,
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;10 - PIO1_IRQ_1&quot;</span>]</span>
+    <span class="ident">PIO1_IRQ_1</span> <span class="op">=</span> <span class="number">10</span>,
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;11 - DMA_IRQ_0&quot;</span>]</span>
+    <span class="ident">DMA_IRQ_0</span> <span class="op">=</span> <span class="number">11</span>,
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;12 - DMA_IRQ_1&quot;</span>]</span>
+    <span class="ident">DMA_IRQ_1</span> <span class="op">=</span> <span class="number">12</span>,
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;13 - IO_IRQ_BANK0&quot;</span>]</span>
+    <span class="ident">IO_IRQ_BANK0</span> <span class="op">=</span> <span class="number">13</span>,
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;14 - IO_IRQ_QSPI&quot;</span>]</span>
+    <span class="ident">IO_IRQ_QSPI</span> <span class="op">=</span> <span class="number">14</span>,
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;15 - SIO_IRQ_PROC0&quot;</span>]</span>
+    <span class="ident">SIO_IRQ_PROC0</span> <span class="op">=</span> <span class="number">15</span>,
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;16 - SIO_IRQ_PROC1&quot;</span>]</span>
+    <span class="ident">SIO_IRQ_PROC1</span> <span class="op">=</span> <span class="number">16</span>,
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;17 - CLOCKS_IRQ&quot;</span>]</span>
+    <span class="ident">CLOCKS_IRQ</span> <span class="op">=</span> <span class="number">17</span>,
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;18 - SPI0_IRQ&quot;</span>]</span>
+    <span class="ident">SPI0_IRQ</span> <span class="op">=</span> <span class="number">18</span>,
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;19 - SPI1_IRQ&quot;</span>]</span>
+    <span class="ident">SPI1_IRQ</span> <span class="op">=</span> <span class="number">19</span>,
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;20 - UART0_IRQ&quot;</span>]</span>
+    <span class="ident">UART0_IRQ</span> <span class="op">=</span> <span class="number">20</span>,
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;21 - UART1_IRQ&quot;</span>]</span>
+    <span class="ident">UART1_IRQ</span> <span class="op">=</span> <span class="number">21</span>,
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;22 - ADC_IRQ_FIFO&quot;</span>]</span>
+    <span class="ident">ADC_IRQ_FIFO</span> <span class="op">=</span> <span class="number">22</span>,
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;23 - I2C0_IRQ&quot;</span>]</span>
+    <span class="ident">I2C0_IRQ</span> <span class="op">=</span> <span class="number">23</span>,
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;24 - I2C1_IRQ&quot;</span>]</span>
+    <span class="ident">I2C1_IRQ</span> <span class="op">=</span> <span class="number">24</span>,
+    <span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;25 - RTC_IRQ&quot;</span>]</span>
+    <span class="ident">RTC_IRQ</span> <span class="op">=</span> <span class="number">25</span>,
+}
+<span class="kw">unsafe</span> <span class="kw">impl</span> <span class="ident">cortex_m::interrupt::InterruptNumber</span> <span class="kw">for</span> <span class="ident">Interrupt</span> {
+    <span class="attribute">#[<span class="ident">inline</span>(<span class="ident">always</span>)]</span>
+    <span class="kw">fn</span> <span class="ident">number</span>(<span class="self">self</span>) <span class="op">-</span><span class="op">&gt;</span> <span class="ident">u16</span> {
+        <span class="self">self</span> <span class="kw">as</span> <span class="ident">u16</span>
+    }
+}
+<span class="attribute">#[<span class="ident">cfg</span>(<span class="ident">feature</span> <span class="op">=</span> <span class="string">&quot;rt&quot;</span>)]</span>
+<span class="kw">mod</span> <span class="ident">_vectors</span>;
+<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;QSPI flash execute-in-place block&quot;</span>]</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">XIP_CTRL</span>: <span class="ident">xip_ctrl::XipCtrl</span> <span class="op">=</span> <span class="ident">xip_ctrl::XipCtrl</span>(<span class="number">0x1400_0000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;DW_apb_ssi has the following features: * APB interface – Allows for easy integration into a DesignWare Synthesizable Components for AMBA 2 implementation. * APB3 and APB4 protocol support. * Scalable APB data bus width – Supports APB data bus widths of 8, 16, and 32 bits. * Serial-master or serial-slave operation – Enables serial communication with serial-master or serial-slave peripheral devices. * Programmable Dual/Quad/Octal SPI support in Master Mode. * Dual Data Rate (DDR) and Read Data Strobe (RDS) Support - Enables the DW_apb_ssi master to perform operations with the device in DDR and RDS modes when working in Dual/Quad/Octal mode of operation. * Data Mask Support - Enables the DW_apb_ssi to selectively update the bytes in the device. This feature is applicable only in enhanced SPI modes. * eXecute-In-Place (XIP) support - Enables the DW_apb_ssi master to behave as a memory mapped I/O and fetches the data from the device based on the APB read request. This feature is applicable only in enhanced SPI modes. * DMA Controller Interface – Enables the DW_apb_ssi to interface to a DMA controller over the bus using a handshaking interface for transfer requests. * Independent masking of interrupts – Master collision, transmit FIFO overflow, transmit FIFO empty, receive FIFO full, receive FIFO underflow, and receive FIFO overflow interrupts can all be masked independently. * Multi-master contention detection – Informs the processor of multiple serial-master accesses on the serial bus. * Bypass of meta-stability flip-flops for synchronous clocks – When the APB clock (pclk) and the DW_apb_ssi serial clock (ssi_clk) are synchronous, meta-stable flip-flops are not used when transferring control signals across these clock domains. * Programmable delay on the sample time of the received serial data bit (rxd); enables programmable control of routing delays resulting in higher serial data-bit rates. * Programmable features: - Serial interface operation – Choice of Motorola SPI, Texas Instruments Synchronous Serial Protocol or National Semiconductor Microwire. - Clock bit-rate – Dynamic control of the serial bit rate of the data transfer; used in only serial-master mode of operation. - Data Item size (4 to 32 bits) – Item size of each data transfer under the control of the programmer. * Configured features: - FIFO depth – 16 words deep. The FIFO width is fixed at 32 bits. - 1 slave select output. - Hardware slave-select – Dedicated hardware slave-select line. - Combined interrupt line - one combined interrupt line from the DW_apb_ssi to the interrupt controller. - Interrupt polarity – active high interrupt lines. - Serial clock polarity – low serial-clock polarity directly after reset. - Serial clock phase – capture on first edge of serial-clock directly after reset.&quot;</span>]</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">XIP_SSI</span>: <span class="ident">xip_ssi::XipSsi</span> <span class="op">=</span> <span class="ident">xip_ssi::XipSsi</span>(<span class="number">0x1800_0000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SYSINFO</span>: <span class="ident">sysinfo::Sysinfo</span> <span class="op">=</span> <span class="ident">sysinfo::Sysinfo</span>(<span class="number">0x4000_0000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Register block for various chip control signals&quot;</span>]</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SYSCFG</span>: <span class="ident">syscfg::Syscfg</span> <span class="op">=</span> <span class="ident">syscfg::Syscfg</span>(<span class="number">0x4000_4000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">CLOCKS</span>: <span class="ident">clocks::Clocks</span> <span class="op">=</span> <span class="ident">clocks::Clocks</span>(<span class="number">0x4000_8000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">RESETS</span>: <span class="ident">resets::Resets</span> <span class="op">=</span> <span class="ident">resets::Resets</span>(<span class="number">0x4000_c000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PSM</span>: <span class="ident">psm::Psm</span> <span class="op">=</span> <span class="ident">psm::Psm</span>(<span class="number">0x4001_0000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IO_BANK0</span>: <span class="ident">io::Io</span> <span class="op">=</span> <span class="ident">io::Io</span>(<span class="number">0x4001_4000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">IO_QSPI</span>: <span class="ident">io::Io</span> <span class="op">=</span> <span class="ident">io::Io</span>(<span class="number">0x4001_8000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PADS_BANK0</span>: <span class="ident">pads::Pads</span> <span class="op">=</span> <span class="ident">pads::Pads</span>(<span class="number">0x4001_c000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PADS_QSPI</span>: <span class="ident">pads::Pads</span> <span class="op">=</span> <span class="ident">pads::Pads</span>(<span class="number">0x4002_0000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Controls the crystal oscillator&quot;</span>]</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">XOSC</span>: <span class="ident">xosc::Xosc</span> <span class="op">=</span> <span class="ident">xosc::Xosc</span>(<span class="number">0x4002_4000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PLL_SYS</span>: <span class="ident">pll::Pll</span> <span class="op">=</span> <span class="ident">pll::Pll</span>(<span class="number">0x4002_8000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PLL_USB</span>: <span class="ident">pll::Pll</span> <span class="op">=</span> <span class="ident">pll::Pll</span>(<span class="number">0x4002_c000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Register block for busfabric control signals and performance counters&quot;</span>]</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">BUSCTRL</span>: <span class="ident">busctrl::Busctrl</span> <span class="op">=</span> <span class="ident">busctrl::Busctrl</span>(<span class="number">0x4003_0000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">UART0</span>: <span class="ident">uart::Uart</span> <span class="op">=</span> <span class="ident">uart::Uart</span>(<span class="number">0x4003_4000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">UART1</span>: <span class="ident">uart::Uart</span> <span class="op">=</span> <span class="ident">uart::Uart</span>(<span class="number">0x4003_8000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SPI0</span>: <span class="ident">spi::Spi</span> <span class="op">=</span> <span class="ident">spi::Spi</span>(<span class="number">0x4003_c000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SPI1</span>: <span class="ident">spi::Spi</span> <span class="op">=</span> <span class="ident">spi::Spi</span>(<span class="number">0x4004_0000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;DW_apb_i2c address block&quot;</span>]</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">I2C0</span>: <span class="ident">i2c::I2c</span> <span class="op">=</span> <span class="ident">i2c::I2c</span>(<span class="number">0x4004_4000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">I2C1</span>: <span class="ident">i2c::I2c</span> <span class="op">=</span> <span class="ident">i2c::I2c</span>(<span class="number">0x4004_8000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Control and data interface to SAR ADC&quot;</span>]</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ADC</span>: <span class="ident">adc::Adc</span> <span class="op">=</span> <span class="ident">adc::Adc</span>(<span class="number">0x4004_c000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Simple PWM&quot;</span>]</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PWM</span>: <span class="ident">pwm::Pwm</span> <span class="op">=</span> <span class="ident">pwm::Pwm</span>(<span class="number">0x4005_0000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Controls time and alarms time is a 64 bit value indicating the time in usec since power-on timeh is the top 32 bits of time &amp; timel is the bottom 32 bits to change time write to timelw before timehw to read time read from timelr before timehr An alarm is set by setting alarm_enable and writing to the corresponding alarm register When an alarm is pending, the corresponding alarm_running signal will be high An alarm can be cancelled before it has finished by clearing the alarm_enable When an alarm fires, the corresponding alarm_irq is set and alarm_running is cleared To clear the interrupt write a 1 to the corresponding alarm_irq&quot;</span>]</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TIMER</span>: <span class="ident">timer::Timer</span> <span class="op">=</span> <span class="ident">timer::Timer</span>(<span class="number">0x4005_4000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">WATCHDOG</span>: <span class="ident">watchdog::Watchdog</span> <span class="op">=</span> <span class="ident">watchdog::Watchdog</span>(<span class="number">0x4005_8000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Register block to control RTC&quot;</span>]</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">RTC</span>: <span class="ident">rtc::Rtc</span> <span class="op">=</span> <span class="ident">rtc::Rtc</span>(<span class="number">0x4005_c000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">ROSC</span>: <span class="ident">rosc::Rosc</span> <span class="op">=</span> <span class="ident">rosc::Rosc</span>(<span class="number">0x4006_0000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;control and status for on-chip voltage regulator and chip level reset subsystem&quot;</span>]</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">VREG_AND_CHIP_RESET</span>: <span class="ident">vreg_and_chip_reset::VregAndChipReset</span> <span class="op">=</span>
+    <span class="ident">vreg_and_chip_reset::VregAndChipReset</span>(<span class="number">0x4006_4000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Testbench manager. Allows the programmer to know what platform their software is running on.&quot;</span>]</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">TBMAN</span>: <span class="ident">tbman::Tbman</span> <span class="op">=</span> <span class="ident">tbman::Tbman</span>(<span class="number">0x4006_c000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;DMA with separate read and write masters&quot;</span>]</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">DMA</span>: <span class="ident">dma::Dma</span> <span class="op">=</span> <span class="ident">dma::Dma</span>(<span class="number">0x5000_0000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;USB FS/LS controller device registers&quot;</span>]</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">USBCTRL_REGS</span>: <span class="ident">usb::Usb</span> <span class="op">=</span> <span class="ident">usb::Usb</span>(<span class="number">0x5011_0000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Programmable IO block&quot;</span>]</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PIO0</span>: <span class="ident">pio::Pio</span> <span class="op">=</span> <span class="ident">pio::Pio</span>(<span class="number">0x5020_0000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">PIO1</span>: <span class="ident">pio::Pio</span> <span class="op">=</span> <span class="ident">pio::Pio</span>(<span class="number">0x5030_0000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="attribute">#[<span class="ident">doc</span> <span class="op">=</span> <span class="string">&quot;Single-cycle IO block Provides core-local and inter-core hardware for the two processors, with single-cycle access.&quot;</span>]</span>
+<span class="kw">pub</span> <span class="kw">const</span> <span class="ident">SIO</span>: <span class="ident">sio::Sio</span> <span class="op">=</span> <span class="ident">sio::Sio</span>(<span class="number">0xd000_0000</span> <span class="kw">as</span> <span class="ident">u32</span> <span class="kw">as</span> <span class="kw">_</span>);
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">adc</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">busctrl</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">clocks</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">common</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">dma</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">i2c</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">io</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">pads</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">pio</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">pll</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">psm</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">pwm</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">resets</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">rosc</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">rtc</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">sio</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">spi</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">syscfg</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">sysinfo</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">tbman</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">timer</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">uart</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">usb</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">vreg_and_chip_reset</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">watchdog</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">xip_ctrl</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">xip_ssi</span>;
+<span class="kw">pub</span> <span class="kw">mod</span> <span class="ident">xosc</span>;
+</pre></div>
+</section><section id="search" class="content hidden"></section><div id="rustdoc-vars" data-root-path="../../" data-current-crate="rp2040_pac2" data-search-index-js="../../search-index.js" data-search-js="../../search.js"></div>
+    <script src="../../main.js"></script><script src="../../source-script.js"></script><script src="../../source-files.js"></script>
+</body></html>

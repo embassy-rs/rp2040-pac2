@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["ChipId","JEDEC JEP-106 compliant chip identifier."],["Platform","Platform register. Allows software to know what environment it is running in."]]});

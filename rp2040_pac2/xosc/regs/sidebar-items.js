@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Count","A down counter running at the xosc frequency which counts to zero and stops. To start the counter write a non-zero value. Can be used for short software pauses when setting up time sensitive hardware."],["Ctrl","Crystal Oscillator Control"],["Startup","Controls the startup delay"],["Status","Crystal Oscillator Status"]]});

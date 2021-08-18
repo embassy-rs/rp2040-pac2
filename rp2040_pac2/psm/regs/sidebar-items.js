@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Done","Indicates the peripheral’s registers are ready to access."],["FrceOff","Force into reset (i.e. power it off)"],["FrceOn","Force block out of reset (i.e. power it on)"],["Wdsel","Set to 1 if this peripheral should be reset when the watchdog fires."]]});

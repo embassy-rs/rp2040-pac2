@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Peripherals","Reset control. If a bit is set it means the peripheral is in reset. 0 means the peripheral’s reset is deasserted."],["Wdsel","Watchdog select. If a bit is set then the watchdog will reset this peripheral when the watchdog fires."]]});

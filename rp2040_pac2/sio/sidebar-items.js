@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["regs",""]],"struct":[["Div",""],["Fifo",""],["Gpio",""],["Interp",""],["Sio","Single-cycle IO block Provides core-local and inter-core hardware for the two processors, with single-cycle access."]]});

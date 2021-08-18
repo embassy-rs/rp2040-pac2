@@ -1,0 +1,1 @@
+initSidebarItems({"struct":[["Platform","Indicates the type of platform in use"]]});

@@ -1,0 +1,1 @@
+initSidebarItems({"mod":[["regs",""]],"struct":[["Adc","Control and data interface to SAR ADC"]]});
